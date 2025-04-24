@@ -75,11 +75,9 @@ export default function HomePage() {
             </Link>
             <Link href="/cart" className="relative p-2">
               <ShoppingCart className="h-6 w-6" />
-              {selectedProducts > 0 && (
-                <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {selectedProducts}
-                </span>
-              )}
+              <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {selectedProducts}
+              </span>
             </Link>
             <Button asChild className="bg-black hover:bg-gray-800 text-white ml-4">
               <Link href="/login">Sign In</Link>
