@@ -6,11 +6,6 @@ on:
       - main
       - develop
       - feature/**
-  pull_request:
-    branches: 
-      - main
-      - develop
-      - feature/**
 
 jobs:
   lint-and-typecheck:
