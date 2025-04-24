@@ -18,6 +18,14 @@ Set up Basic CI/CD no unit test, just prettier and type checks
 
 ### Helpful Prompt when issues occured in step 2
 
+## Prompt 4
+
+Use text on Auth setup page: https://authjs.dev/getting-started/installation?framework=npm
+
+Implement this using above for step 4 authentication and autorisation
+
+### Helper Prompts
+
 #### 1.
 
 Task one has been done, that's Set up PostgressSQL database, using Neon via Vercel. The .env file has been updated with the DATABASE_URL.
