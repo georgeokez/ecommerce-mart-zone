@@ -163,6 +163,7 @@ export default function LoginPage() {
 
         <div className="text-center mt-8">
           <p className="text-gray-600">
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             Don't have an account?{' '}
             <Link href="/register" className="text-indigo-600 hover:text-indigo-800 font-medium">
               Sign up
