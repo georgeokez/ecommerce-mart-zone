@@ -10,6 +10,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 ## Features
 
 ### Customer-Facing Storefront
+
 - User authentication and account management
 - Product browsing with advanced filtering and search
 - Product detail pages with variants and inventory tracking
@@ -19,6 +20,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 - Responsive design for all devices
 
 ### Admin Dashboard
+
 - Comprehensive analytics and sales reporting
 - Product management (add, edit, delete)
 - Inventory tracking and alerts
@@ -30,6 +32,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 ## Tech Stack
 
 ### Frontend
+
 - **Next.js 15** with App Router
 - **TypeScript** for type safety
 - **Shadcn UI** for component library
@@ -39,6 +42,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 - **Recharts** for data visualization
 
 ### Backend
+
 - **Next.js API Routes** for server-side API
 - **PostgreSQL** for database (via Neon)
 - **Prisma** for ORM and database management
@@ -47,6 +51,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 - **Stripe** for payment processing
 
 ### DevOps & Utilities
+
 - **GitHub Actions** for CI/CD
 - **Uploadthing** for file uploads
 - **Resend** for transactional emails
@@ -55,6 +60,7 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 20.x or later
 - PostgreSQL database (we use Neon)
 - Stripe account for payments
@@ -63,29 +69,34 @@ A modern, full-stack e-commerce application built with Next.js 15 and PostgreSQL
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/ecommerce-app.git
 cd ecommerce-app
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables
+
 ```bash
 cp .env.example .env.local
 # Fill in your environment variables in .env.local
 ```
 
 4. Set up the database
+
 ```bash
 npm run db:migrate
 npm run db:seed
 ```
 
 5. Start the development server
+
 ```bash
 npm run dev
 ```
