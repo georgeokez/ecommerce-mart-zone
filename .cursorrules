@@ -16,7 +16,7 @@
 
 ## Scratchpad
  
-### 1. Project Setup Phase [ ]
+### 1. Project Setup Phase [x]
 - [X] Initialize Next.js project with TypeScript
 - [X] Set up project structure (app router)
 - [X] Configure ESLint and Prettier
@@ -33,17 +33,18 @@
   - [X] Resend for email functionality
   - [X] Recharts for data visualization
 
-### 2. Database Design [ ]
-- [ ] Design database schema
-  - [ ] User model (customers, admins)
-  - [ ] Product model (categories, variants, inventory)
-  - [ ] Order model
-  - [ ] Cart/Checkout model
-  - [ ] Review model
-  - [ ] Payment model
-- [ ] Create Prisma schema
-- [ ] Set up database migrations
-- [ ] Seed initial data
+### 2. Database Design [x]
+- [X] Set up PostgresSQL database
+- [X] Design database schema
+  - [X] User model (customers, admins)
+  - [X] Product model (categories, variants, inventory)
+  - [X] Order model
+  - [X] Cart/Checkout model
+  - [X] Review model
+  - [X] Payment model
+- [X] Create Prisma schema
+- [X] Set up database migrations
+- [X] Seed initial data
 
 ### 3. Authentication & Authorization [ ]
 - [ ] Implement NextAuth.js with appropriate providers
