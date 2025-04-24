@@ -3,7 +3,25 @@ import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+async function testConnection() {
+  try {
+    const result = await prisma.$queryRaw`SELECT 1 as connected`;
+    console.log('Database connection successful:', result);
+    return true;
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    return false;
+  }
+}
+
 async function main() {
+  // Test database connection first
+  const isConnected = await testConnection();
+  if (!isConnected) {
+    console.error('Failed to connect to database. Aborting seed operation.');
+    process.exit(1);
+  }
+
   console.log('Starting seed...');
 
   // Clear existing data
@@ -23,7 +41,7 @@ async function main() {
   await prisma.verificationToken.deleteMany();
 
   // Create admin user
-  const adminPassword = await hash('password123', 10);
+  const adminPassword = await hash('admin_password@123', 10);
   const admin = await prisma.user.create({
     data: {
       name: 'Admin User',
@@ -34,20 +52,20 @@ async function main() {
   });
 
   // Create regular user
-  const userPassword = await hash('password123', 10);
+  const userPassword = await hash('user_password@123', 10);
   const user = await prisma.user.create({
     data: {
-      name: 'John Doe',
-      email: 'user@example.com',
+      name: 'George Okez',
+      email: 'george@example.com',
       password: userPassword,
       role: 'USER',
       addresses: {
         create: {
           street: '123 Main St',
-          city: 'San Francisco',
-          state: 'CA',
+          city: 'London',
+          state: 'SU',
           postalCode: '94105',
-          country: 'USA',
+          country: 'UK',
           isDefault: true,
         },
       },
@@ -57,160 +75,56 @@ async function main() {
     },
   });
 
-  // Create categories
-  const electronicsCategory = await prisma.category.create({
+  // Create categories using images from public/images folder
+  const tshirtCategory = await prisma.category.create({
     data: {
-      name: 'Electronics',
-      description: 'Electronic devices and accessories',
-      slug: 'electronics',
-      image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=2070',
+      name: 'T-shirt',
+      description: 'Comfortable and stylish t-shirts',
+      slug: 't-shirt',
+      image: '/images/c-tshirts.jpg',
     },
   });
 
-  const clothingCategory = await prisma.category.create({
+  const jeansCategory = await prisma.category.create({
     data: {
-      name: 'Clothing',
-      description: 'Apparel and fashion items',
-      slug: 'clothing',
-      image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=2070',
+      name: 'Jeans',
+      description: 'Durable and fashionable jeans',
+      slug: 'jeans',
+      image: '/images/c-jeans.jpg',
     },
   });
 
-  const homeCategory = await prisma.category.create({
+  const shoesCategory = await prisma.category.create({
     data: {
-      name: 'Home & Kitchen',
-      description: 'Home goods and kitchen appliances',
-      slug: 'home-kitchen',
-      image: 'https://images.unsplash.com/photo-1556911220-bda9f10c11e4?q=80&w=2070',
+      name: 'Shoes',
+      description: 'Footwear for every occasion',
+      slug: 'shoes',
+      image: '/images/c-shoes.jpg',
     },
   });
 
-  // Create products with variants
-  const smartphone = await prisma.product.create({
+  // Create T-shirt products
+  const tshirt1 = await prisma.product.create({
     data: {
-      name: 'Premium Smartphone',
-      description: 'Latest model smartphone with advanced features',
-      price: 999.99,
-      comparePrice: 1099.99,
-      sku: 'PHONE-001',
-      inventory: 100,
-      images: [
-        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2080',
-        'https://images.unsplash.com/photo-1592434134753-a70baf7979d5?q=80&w=2070',
-      ],
-      slug: 'premium-smartphone',
-      categoryId: electronicsCategory.id,
-      variants: {
-        create: [
-          {
-            name: 'Black / 128GB',
-            price: 999.99,
-            inventory: 50,
-            sku: 'PHONE-001-BLK-128',
-            options: {
-              color: 'Black',
-              storage: '128GB',
-            },
-          },
-          {
-            name: 'Silver / 256GB',
-            price: 1099.99,
-            inventory: 30,
-            sku: 'PHONE-001-SLV-256',
-            options: {
-              color: 'Silver',
-              storage: '256GB',
-            },
-          },
-          {
-            name: 'Blue / 512GB',
-            price: 1199.99,
-            inventory: 20,
-            sku: 'PHONE-001-BLU-512',
-            options: {
-              color: 'Blue',
-              storage: '512GB',
-            },
-          },
-        ],
-      },
-    },
-  });
-
-  const laptop = await prisma.product.create({
-    data: {
-      name: 'Ultrabook Laptop',
-      description: 'Thin and lightweight laptop for professionals',
-      price: 1499.99,
-      sku: 'LAPTOP-001',
-      inventory: 50,
-      images: [
-        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071',
-        'https://images.unsplash.com/photo-1537498425277-c283d32ef9db?q=80&w=2078',
-      ],
-      slug: 'ultrabook-laptop',
-      categoryId: electronicsCategory.id,
-      variants: {
-        create: [
-          {
-            name: 'i5 / 8GB / 256GB',
-            price: 1499.99,
-            inventory: 25,
-            sku: 'LAPTOP-001-I5-8-256',
-            options: {
-              processor: 'i5',
-              ram: '8GB',
-              storage: '256GB SSD',
-            },
-          },
-          {
-            name: 'i7 / 16GB / 512GB',
-            price: 1899.99,
-            inventory: 15,
-            sku: 'LAPTOP-001-I7-16-512',
-            options: {
-              processor: 'i7',
-              ram: '16GB',
-              storage: '512GB SSD',
-            },
-          },
-          {
-            name: 'i9 / 32GB / 1TB',
-            price: 2399.99,
-            inventory: 10,
-            sku: 'LAPTOP-001-I9-32-1TB',
-            options: {
-              processor: 'i9',
-              ram: '32GB',
-              storage: '1TB SSD',
-            },
-          },
-        ],
-      },
-    },
-  });
-
-  const tshirt = await prisma.product.create({
-    data: {
-      name: 'Premium Cotton T-shirt',
-      description: 'Soft and comfortable cotton t-shirt',
+      name: 'Classic Cotton T-shirt',
+      description: 'Soft and comfortable cotton t-shirt for everyday wear',
       price: 24.99,
       comparePrice: 29.99,
-      sku: 'TSHIRT-001',
-      inventory: 200,
+      sku: 'TS-001',
+      inventory: 100,
       images: [
-        'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=1974',
-        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=2080',
+        '/images/p11-1.jpg',
+        '/images/p11-2.jpg',
       ],
-      slug: 'premium-cotton-tshirt',
-      categoryId: clothingCategory.id,
+      slug: 'classic-cotton-tshirt',
+      categoryId: tshirtCategory.id,
       variants: {
         create: [
           {
             name: 'White / S',
             price: 24.99,
-            inventory: 40,
-            sku: 'TSHIRT-001-WHT-S',
+            inventory: 30,
+            sku: 'TS-001-WHT-S',
             options: {
               color: 'White',
               size: 'S',
@@ -219,31 +133,21 @@ async function main() {
           {
             name: 'White / M',
             price: 24.99,
-            inventory: 40,
-            sku: 'TSHIRT-001-WHT-M',
+            inventory: 35,
+            sku: 'TS-001-WHT-M',
             options: {
               color: 'White',
               size: 'M',
             },
           },
           {
-            name: 'Black / S',
+            name: 'White / L',
             price: 24.99,
-            inventory: 40,
-            sku: 'TSHIRT-001-BLK-S',
+            inventory: 35,
+            sku: 'TS-001-WHT-L',
             options: {
-              color: 'Black',
-              size: 'S',
-            },
-          },
-          {
-            name: 'Black / M',
-            price: 24.99,
-            inventory: 40,
-            sku: 'TSHIRT-001-BLK-M',
-            options: {
-              color: 'Black',
-              size: 'M',
+              color: 'White',
+              size: 'L',
             },
           },
         ],
@@ -251,20 +155,260 @@ async function main() {
     },
   });
 
-  const coffeemaker = await prisma.product.create({
+  const tshirt2 = await prisma.product.create({
     data: {
-      name: 'Programmable Coffee Maker',
-      description: 'Automatic coffee maker with timer and multiple settings',
-      price: 89.99,
-      comparePrice: 99.99,
-      sku: 'COFFEE-001',
+      name: 'Premium Graphic T-shirt',
+      description: 'Eye-catching graphic t-shirt with unique designs',
+      price: 34.99,
+      comparePrice: 39.99,
+      sku: 'TS-002',
+      inventory: 80,
+      images: [
+        '/images/p12-1.jpg',
+        '/images/p12-2.jpg',
+      ],
+      slug: 'premium-graphic-tshirt',
+      categoryId: tshirtCategory.id,
+      variants: {
+        create: [
+          {
+            name: 'Black / S',
+            price: 34.99,
+            inventory: 25,
+            sku: 'TS-002-BLK-S',
+            options: {
+              color: 'Black',
+              size: 'S',
+            },
+          },
+          {
+            name: 'Black / M',
+            price: 34.99,
+            inventory: 30,
+            sku: 'TS-002-BLK-M',
+            options: {
+              color: 'Black',
+              size: 'M',
+            },
+          },
+          {
+            name: 'Black / L',
+            price: 34.99,
+            inventory: 25,
+            sku: 'TS-002-BLK-L',
+            options: {
+              color: 'Black',
+              size: 'L',
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  // Create Jeans products
+  const jeans1 = await prisma.product.create({
+    data: {
+      name: 'Classic Slim Fit Jeans',
+      description: 'Timeless slim fit jeans that offer both comfort and style',
+      price: 59.99,
+      comparePrice: 69.99,
+      sku: 'JN-001',
       inventory: 75,
       images: [
-        'https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=2073',
-        'https://images.unsplash.com/photo-1502899684837-a70865ba277a?q=80&w=2073',
+        '/images/p21-1.jpg',
+        '/images/p21-2.jpg',
       ],
-      slug: 'programmable-coffee-maker',
-      categoryId: homeCategory.id,
+      slug: 'classic-slim-fit-jeans',
+      categoryId: jeansCategory.id,
+      variants: {
+        create: [
+          {
+            name: 'Blue / 30',
+            price: 59.99,
+            inventory: 25,
+            sku: 'JN-001-BLU-30',
+            options: {
+              color: 'Blue',
+              size: '30',
+            },
+          },
+          {
+            name: 'Blue / 32',
+            price: 59.99,
+            inventory: 25,
+            sku: 'JN-001-BLU-32',
+            options: {
+              color: 'Blue',
+              size: '32',
+            },
+          },
+          {
+            name: 'Blue / 34',
+            price: 59.99,
+            inventory: 25,
+            sku: 'JN-001-BLU-34',
+            options: {
+              color: 'Blue',
+              size: '34',
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  const jeans2 = await prisma.product.create({
+    data: {
+      name: 'Distressed Skinny Jeans',
+      description: 'Modern skinny jeans with stylish distressed details',
+      price: 69.99,
+      comparePrice: 79.99,
+      sku: 'JN-002',
+      inventory: 60,
+      images: [
+        '/images/p22-1.jpg',
+        '/images/p22-2.jpg',
+      ],
+      slug: 'distressed-skinny-jeans',
+      categoryId: jeansCategory.id,
+      variants: {
+        create: [
+          {
+            name: 'Light Blue / 30',
+            price: 69.99,
+            inventory: 20,
+            sku: 'JN-002-LBL-30',
+            options: {
+              color: 'Light Blue',
+              size: '30',
+            },
+          },
+          {
+            name: 'Light Blue / 32',
+            price: 69.99,
+            inventory: 20,
+            sku: 'JN-002-LBL-32',
+            options: {
+              color: 'Light Blue',
+              size: '32',
+            },
+          },
+          {
+            name: 'Light Blue / 34',
+            price: 69.99,
+            inventory: 20,
+            sku: 'JN-002-LBL-34',
+            options: {
+              color: 'Light Blue',
+              size: '34',
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  // Create Shoes products
+  const shoes1 = await prisma.product.create({
+    data: {
+      name: 'Casual Canvas Sneakers',
+      description: 'Versatile canvas sneakers perfect for everyday wear',
+      price: 49.99,
+      comparePrice: 59.99,
+      sku: 'SH-001',
+      inventory: 90,
+      images: [
+        '/images/p31-1.jpg',
+        '/images/p31-2.jpg',
+      ],
+      slug: 'casual-canvas-sneakers',
+      categoryId: shoesCategory.id,
+      variants: {
+        create: [
+          {
+            name: 'White / 8',
+            price: 49.99,
+            inventory: 15,
+            sku: 'SH-001-WHT-8',
+            options: {
+              color: 'White',
+              size: '8',
+            },
+          },
+          {
+            name: 'White / 9',
+            price: 49.99,
+            inventory: 20,
+            sku: 'SH-001-WHT-9',
+            options: {
+              color: 'White',
+              size: '9',
+            },
+          },
+          {
+            name: 'White / 10',
+            price: 49.99,
+            inventory: 15,
+            sku: 'SH-001-WHT-10',
+            options: {
+              color: 'White',
+              size: '10',
+            },
+          },
+        ],
+      },
+    },
+  });
+
+  const shoes2 = await prisma.product.create({
+    data: {
+      name: 'Sport Running Shoes',
+      description: 'High-performance running shoes with advanced cushioning',
+      price: 89.99,
+      comparePrice: 99.99,
+      sku: 'SH-002',
+      inventory: 70,
+      images: [
+        '/images/p32-1.jpg',
+        '/images/p32-2.jpg',
+      ],
+      slug: 'sport-running-shoes',
+      categoryId: shoesCategory.id,
+      variants: {
+        create: [
+          {
+            name: 'Black / 8',
+            price: 89.99,
+            inventory: 15,
+            sku: 'SH-002-BLK-8',
+            options: {
+              color: 'Black',
+              size: '8',
+            },
+          },
+          {
+            name: 'Black / 9',
+            price: 89.99,
+            inventory: 20,
+            sku: 'SH-002-BLK-9',
+            options: {
+              color: 'Black',
+              size: '9',
+            },
+          },
+          {
+            name: 'Black / 10',
+            price: 89.99,
+            inventory: 15,
+            sku: 'SH-002-BLK-10',
+            options: {
+              color: 'Black',
+              size: '10',
+            },
+          },
+        ],
+      },
     },
   });
 
@@ -272,18 +416,18 @@ async function main() {
   await prisma.review.create({
     data: {
       rating: 5,
-      comment: 'Excellent smartphone! Fast and great camera.',
+      comment: 'Best t-shirt I\'ve ever owned. So comfortable!',
       userId: user.id,
-      productId: smartphone.id,
+      productId: tshirt1.id,
     },
   });
 
   await prisma.review.create({
     data: {
       rating: 4,
-      comment: 'Good laptop but battery life could be better.',
+      comment: 'Great jeans, perfect fit.',
       userId: user.id,
-      productId: laptop.id,
+      productId: jeans1.id,
     },
   });
 
@@ -294,9 +438,9 @@ async function main() {
       data: {
         quantity: 1,
         cartId: userCart.id,
-        productId: smartphone.id,
+        productId: shoes1.id,
         variantId: (await prisma.productVariant.findFirst({
-          where: { productId: smartphone.id },
+          where: { productId: shoes1.id },
         }))?.id,
       },
     });
@@ -305,35 +449,35 @@ async function main() {
   // Create an order
   const userAddress = await prisma.address.findFirst({ where: { userId: user.id } });
   if (userAddress) {
-    const laptopVariant = await prisma.productVariant.findFirst({
-      where: { sku: 'LAPTOP-001-I5-8-256' },
+    const tshirtVariant = await prisma.productVariant.findFirst({
+      where: { sku: 'TS-001-WHT-M' },
     });
 
     const order = await prisma.order.create({
       data: {
         orderNumber: 'ORD-10001',
         status: 'DELIVERED',
-        total: 1599.98,
-        subtotal: 1499.98,
-        tax: 50.00,
-        shipping: 50.00,
+        total: 54.99,
+        subtotal: 24.99,
+        tax: 5.00,
+        shipping: 25.00,
         userId: user.id,
         addressId: userAddress.id,
         items: {
           create: [
             {
               quantity: 1,
-              price: 1499.99,
-              name: 'Ultrabook Laptop',
-              sku: 'LAPTOP-001-I5-8-256',
-              productId: laptop.id,
-              variantId: laptopVariant?.id,
+              price: 24.99,
+              name: 'Classic Cotton T-shirt',
+              sku: 'TS-001-WHT-M',
+              productId: tshirt1.id,
+              variantId: tshirtVariant?.id,
             },
           ],
         },
         payment: {
           create: {
-            amount: 1599.98,
+            amount: 54.99,
             paymentMethod: 'Credit Card',
             status: 'COMPLETED',
             stripePaymentId: 'pi_mock_123456',
