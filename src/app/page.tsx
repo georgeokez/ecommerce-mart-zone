@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ShoppingCart, Search, Facebook, Twitter, Instagram } from 'lucide-react';
-
 export default function HomePage() {
   const featuredProducts = [
     {
@@ -35,6 +34,8 @@ export default function HomePage() {
       slug: 'poster-shirt',
     },
   ];
+
+  const selectedProducts = 0; // TODO: get from user product selection
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -74,9 +75,11 @@ export default function HomePage() {
             </Link>
             <Link href="/cart" className="relative p-2">
               <ShoppingCart className="h-6 w-6" />
-              <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                1
-              </span>
+              {selectedProducts > 0 && (
+                <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {selectedProducts}
+                </span>
+              )}
             </Link>
             <Button asChild className="bg-black hover:bg-gray-800 text-white ml-4">
               <Link href="/login">Sign In</Link>
@@ -102,7 +105,7 @@ export default function HomePage() {
 
           <div className="relative container mx-auto h-full flex items-center px-8">
             <div className="max-w-xl text-white">
-              <h1 className="text-5xl font-bold mb-4">Explore the Universe</h1>
+              <h1 className="text-5xl font-bold mb-4">Explore Our Universe</h1>
               <p className="text-xl mb-8">Discover our collection of cosmic products</p>
               <Button
                 asChild
