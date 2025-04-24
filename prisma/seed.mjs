@@ -41,7 +41,7 @@ async function main() {
   await prisma.verificationToken.deleteMany();
 
   // Create admin user
-  const adminPassword = await hash('password123', 10);
+  const adminPassword = await hash('admin_password@123', 10);
   const admin = await prisma.user.create({
     data: {
       name: 'Admin User',
@@ -52,20 +52,20 @@ async function main() {
   });
 
   // Create regular user
-  const userPassword = await hash('password123', 10);
+  const userPassword = await hash('user_password@123', 10);
   const user = await prisma.user.create({
     data: {
-      name: 'John Doe',
-      email: 'user@example.com',
+      name: 'George Okez',
+      email: 'george@example.com',
       password: userPassword,
       role: 'USER',
       addresses: {
         create: {
           street: '123 Main St',
-          city: 'San Francisco',
-          state: 'CA',
+          city: 'London',
+          state: 'SU',
           postalCode: '94105',
-          country: 'USA',
+          country: 'UK',
           isDefault: true,
         },
       },
