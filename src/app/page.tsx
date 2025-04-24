@@ -105,7 +105,7 @@ export default function HomePage() {
 
           <div className="relative container mx-auto h-full flex items-center px-8">
             <div className="max-w-xl text-white">
-              <h1 className="text-5xl font-bold mb-4">Explore the Universe</h1>
+              <h1 className="text-5xl font-bold mb-4">Explore Our Universe</h1>
               <p className="text-xl mb-8">Discover our collection of cosmic products</p>
               <Button
                 asChild
