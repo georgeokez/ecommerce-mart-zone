@@ -143,4 +143,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [Next.js](https://nextjs.org/) team for the amazing framework
 - [Shadcn UI](https://ui.shadcn.com/) for the beautiful components
-- All the open source libraries that make this project possible.
+- All the open source libraries that make this project possible
