@@ -2,18 +2,23 @@ import { PrismaClient } from '@prisma/client';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 // Define global type for PrismaClient singleton
+// This needs to be in a separate file that is imported here
+// and in any other file that uses the global prisma instance
 declare global {
   // eslint-disable-next-line no-var
-  var cachedPrisma: PrismaClient | undefined;
+  var cachedPrisma: ReturnType<typeof createPrismaClient> | undefined;
+}
+
+// Create a function that returns the Prisma client with extensions
+function createPrismaClient() {
+  return new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  }).$extends(withAccelerate());
 }
 
 // PrismaClient is attached to the `global` object to prevent
 // exhausting database connections during development with hot-reload
-export const prisma = 
-  global.cachedPrisma || 
-  new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  }).$extends(withAccelerate());
+export const prisma = global.cachedPrisma || createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
   global.cachedPrisma = prisma;
@@ -30,4 +35,4 @@ export async function testConnection() {
     console.error('Database connection failed:', error);
     return false;
   }
-} 
+}

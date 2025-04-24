@@ -46,14 +46,17 @@
 - [X] Set up database migrations
 - [X] Seed initial data
 
-### 3. Authentication & Authorization [ ]
+### 3. Setup Basic CI/CD [x]
+- [X] Set up Basic CI/CD no unit test, just prettier and type checks
+
+### 4. Authentication & Authorization [ ]
 - [ ] Implement NextAuth.js with appropriate providers
 - [ ] Set up user roles (admin, customer)
 - [ ] Create login/register pages
 - [ ] Implement protected routes
 - [ ] Add forgot/reset password functionality
 
-### 3. Customer Frontend [ ]
+### 5. Customer Frontend [ ]
 - [ ] Create responsive layout with Shadcn UI
   - [ ] Header with navigation
   - [ ] Footer
@@ -78,7 +81,7 @@
   - [ ] Address management
 - [ ] Product review and rating system
 
-### 4. Admin Dashboard [ ]
+### 5. Admin Dashboard [ ]
 - [ ] Create dashboard layout with Shadcn UI
   - [ ] Sidebar navigation
   - [ ] Admin header
@@ -103,7 +106,7 @@
 - [ ] User management (admin accounts)
 - [ ] Settings and configuration
 
-### 5. API Development [ ]
+### 6. API Development [ ]
 - [ ] Design RESTful API structure
 - [ ] Implement product API endpoints
 - [ ] Implement cart/checkout API endpoints
@@ -112,27 +115,27 @@
 - [ ] Implement admin API endpoints
 - [ ] Implement payment API endpoints with Stripe
 
-### 6. Email Notifications [ ]
+### 7. Email Notifications [ ]
 - [ ] Configure Resend email service
 - [ ] Order confirmation emails
 - [ ] Shipping updates
 - [ ] Password reset emails
 - [ ] Account notifications
 
-### 7. Testing [ ]
+### 8. Testing [ ]
 - [ ] Unit tests for API endpoints
 - [ ] Integration tests for key flows
 - [ ] E2E tests for critical paths
 - [ ] Performance testing
 
-### 8. Deployment & DevOps [ ]
+### 9. Deployment & DevOps [ ]
 - [ ] Configure environment variables
 - [ ] Set up CI/CD pipeline
 - [ ] Deploy to hosting platform
 - [ ] Database deployment
 - [ ] Monitoring and logging setup
 
-### 9. Post-Launch [ ]
+### 10. Post-Launch [ ]
 - [ ] Analytics implementation
 - [ ] Performance optimization
 - [ ] SEO improvements
